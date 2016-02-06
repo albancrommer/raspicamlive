@@ -56,6 +56,9 @@ class Recorder {
      * @param type $filename
      */
     function fixPerms($filename) {
+        if( !is_file($filename) ){
+            echo "$filename is not a file\n";
+        }
         chown($filename, "www-data");
         chmod($filename, 0666);
         return $filename;
@@ -140,7 +143,7 @@ class Recorder {
         if( ! $project){
             $project = $this->getProjectName();
             if( ! $this->project){
-                return "";
+                throw new Exception("Cannot find project name.");
             }else{
                 $project = $this->project;
             }
@@ -378,8 +381,8 @@ class Recorder {
 
         $cmd = "sudo " . APP_ROOT . "/sh/stop_recording";
         // Attempt to run bash stop command
-        exec( $cmd, $output, $return_var);
-        
+        exec("sudo " . WEB_ROOT . "/sh/stop_recording", $output, $return_var);
+
         // Failed ?
         if (0 !== $return_var) {
             $this->logger->fatal("errcode:".$return_var." cmd: $cmd output:".print_r($output,1));

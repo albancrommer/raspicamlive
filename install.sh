@@ -139,6 +139,8 @@ fi
 [ -d "/mnt/current" ] || mkdir "/mnt/current"
 [ $? -eq 0 ] || warn "Could not create the /mnt/current directory. Troubles ahead."
 
+# Ensure the log directory exists
+[ -d "/var/log/raspicam" ] || { mkdir /var/log/raspicam && chown www-data:www-data /var/log/raspicam ; }
 
 ## Configure sudoers
 copy "$TMP_PATH/etc/sudoers.d/raspicamlive" /etc/sudoers.d/
